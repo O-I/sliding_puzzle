@@ -25,10 +25,9 @@ end
 # For example, if x=(a,b) and y=(c,d), the Manhatten distance between x and y is |a−c|+|b−d|.
 
 def manhattan_distance(grid)
-  metric = grid
   grid_size = grid.size
-  metric.each.with_index do |row, r|
-    row.map!.with_index do |tile, c|
+  grid.map.with_index do |row, r|
+    row.map.with_index do |tile, c|
       if tile == 0
         0
       else
@@ -39,6 +38,23 @@ def manhattan_distance(grid)
       end
     end
   end
+end
+
+def hamming_weight(grid)
+  # metric = grid
+  # grid_size = grid.size
+  # metric.each.with_index do |row, r|
+  #   row.map!.with_index do |tile, c|
+  #     if tile == 0 || tile == grid.flatten.index(tile) + 1
+  #       0
+  #     else
+  #       1
+  #     end
+  #   end
+  # end
+  grid.flatten.map.with_index do |tile, i|
+    tile == 0 || tile == i + 1 ? 0 : 1
+  end.each_slice(grid.size).to_a
 end
 
 puz = [[12,  1, 10,  2],
@@ -56,3 +72,6 @@ p solvable?(puz)
 p solvable?(insoluble)
 
 p manhattan_distance(puz)
+p puz
+p hamming_weight(puz)
+p hamming_weight(insoluble)
