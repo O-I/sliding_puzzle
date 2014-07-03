@@ -33,7 +33,7 @@ def manhattan_distance(grid)
       else
         target_row = ((tile - 1) / grid_size) + 1
         target_col = tile % grid_size
-        target_col = 4 if target_col == 0
+        target_col = grid_size if target_col == 0
         (r + 1 - target_row).abs + (c + 1 - target_col).abs
       end
     end
@@ -41,20 +41,10 @@ def manhattan_distance(grid)
 end
 
 def hamming_weight(grid)
-  # metric = grid
-  # grid_size = grid.size
-  # metric.each.with_index do |row, r|
-  #   row.map!.with_index do |tile, c|
-  #     if tile == 0 || tile == grid.flatten.index(tile) + 1
-  #       0
-  #     else
-  #       1
-  #     end
-  #   end
-  # end
+  grid_size = grid.size
   grid.flatten.map.with_index do |tile, i|
     tile == 0 || tile == i + 1 ? 0 : 1
-  end.each_slice(grid.size).to_a
+  end.each_slice(grid_size).to_a
 end
 
 puz = [[12,  1, 10,  2],
