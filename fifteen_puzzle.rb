@@ -11,7 +11,7 @@ def solvable?(grid)
   blanks_row = state.index(0) / grid_size
 
   inversions = state.map.with_index do |tile, pos|
-    state[pos..state_size].count do |t|
+    state[pos..state_size - 1].count do |t|
       0 < t && t < tile
     end
   end.reduce(:+)
