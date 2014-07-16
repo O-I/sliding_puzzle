@@ -56,6 +56,12 @@ module SlidingPuzzle
       end.reduce(:+)
     end
 
+    def hamming_weight
+      tiles.map.with_index do |tile, pos|
+        tile == 0 || tile == pos + 1 ? 0 : 1
+      end.reduce(:+)
+    end
+
     # TO DO: generalized random function
     def random_15_puzzle
       @grid = [*0..15].shuffle.each_slice(4).to_a
@@ -68,4 +74,6 @@ module SlidingPuzzle
       ([*0..grid.flatten.size - 1] - grid.flatten).empty?
     end
   end
+  require 'pry'
+  binding.pry
 end
