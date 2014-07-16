@@ -62,6 +62,21 @@ module SlidingPuzzle
       end.reduce(:+)
     end
 
+    def manhattan_distance
+      @grid.map.with_index do |row, r|
+        row.map.with_index do |tile, c|
+          if tile == 0
+            0
+          else
+            target_row = ((tile - 1) / height) + 1
+            target_col = tile % height
+            target_col = height if target_col == 0
+            (r + 1 - target_row).abs + (c + 1 - target_col).abs
+          end
+        end
+      end.flatten.reduce(:+)
+    end
+
     # TO DO: generalized random function
     def random_15_puzzle
       @grid = [*0..15].shuffle.each_slice(4).to_a
@@ -74,6 +89,4 @@ module SlidingPuzzle
       ([*0..grid.flatten.size - 1] - grid.flatten).empty?
     end
   end
-  require 'pry'
-  binding.pry
 end
