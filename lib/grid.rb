@@ -44,18 +44,6 @@ module SlidingPuzzle
       ((height.even? && blank_at_row.odd?) == inversions.even?)
     end
 
-    def blank_at_row
-      tiles.index(0) / height
-    end
-
-    def inversions
-      tiles.map.with_index do |tile, pos|
-        tiles[pos..tile_count - 1].count do |t|
-          0 < t && t < tile
-        end
-      end.reduce(:+)
-    end
-
     def hamming_weight
       tiles.map.with_index do |tile, pos|
         tile == 0 || tile == pos + 1 ? 0 : 1
@@ -87,6 +75,18 @@ module SlidingPuzzle
     def valid?(grid)
       (grid.transpose rescue false) &&
       ([*0..grid.flatten.size - 1] - grid.flatten).empty?
+    end
+
+    def blank_at_row
+      tiles.index(0) / height
+    end
+
+    def inversions
+      tiles.map.with_index do |tile, pos|
+        tiles[pos..tile_count - 1].count do |t|
+          0 < t && t < tile
+        end
+      end.reduce(:+)
     end
   end
 end
