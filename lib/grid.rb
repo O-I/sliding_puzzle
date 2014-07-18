@@ -3,7 +3,7 @@ require_relative './errors'
 module SlidingPuzzle
   class Grid
 
-    def initialize(grid = random_15_puzzle)
+    def initialize(grid = random_puzzle)
       if valid? grid
         @grid = grid
       else
@@ -65,9 +65,8 @@ module SlidingPuzzle
       end.flatten.reduce(:+)
     end
 
-    # TO DO: generalized random function
-    def random_15_puzzle
-      @grid = [*0..15].shuffle.each_slice(4).to_a
+    def random_puzzle(height = 4, width = 4)
+      @grid = [*0...height * width].shuffle.each_slice(width).to_a
     end
 
     private
