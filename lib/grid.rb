@@ -19,7 +19,7 @@ module SlidingPuzzle
       @grid.flatten
     end
 
-    def tile_count
+    def grid_size
       height * width
     end
 
@@ -36,7 +36,7 @@ module SlidingPuzzle
     end
 
     def solved?
-      tiles == [*0..tile_count - 1].rotate(1)
+      tiles == [*0...grid_size].rotate(1)
     end
 
     def solvable?
@@ -74,7 +74,7 @@ module SlidingPuzzle
 
     def valid?(grid)
       (grid.transpose rescue false) &&
-      ([*0..grid.flatten.size - 1] - grid.flatten).empty?
+      ([*0...grid.flatten.size] - grid.flatten).empty?
     end
 
     def blank_at_row
@@ -83,7 +83,7 @@ module SlidingPuzzle
 
     def inversions
       tiles.map.with_index do |tile, pos|
-        tiles[pos..tile_count - 1].count do |t|
+        tiles[pos...grid_size].count do |t|
           0 < t && t < tile
         end
       end.reduce(:+)
