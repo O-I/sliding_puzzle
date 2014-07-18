@@ -129,6 +129,44 @@ describe SlidingPuzzle::Grid do
       end
     end
 
+    describe '#solve' do
+
+      context 'when the puzzle is aleady solved' do
+
+        before do
+          $stdout.stub(:write)
+          @solved = SlidingPuzzle::Grid.new [[1, 2, 3],
+                                             [4, 5, 6],
+                                             [7, 8, 0]]
+        end
+
+        it 'returns the original grid' do
+          expect(@solved.solve).to eq @solved.grid
+        end
+      end
+
+      context 'when the puzzle cannot be solved' do
+
+        before do
+          $stdout.stub(:write)
+          @insoluble = SlidingPuzzle::Grid.new [[ 1,  2,  3,  4],
+                                                [ 5,  6,  7,  8],
+                                                [ 9, 10, 11, 12],
+                                                [13, 15, 14,  0]]
+        end
+
+        it 'returns an empty array' do
+          expect(@insoluble.solve).to eq []
+        end
+      end
+
+      context 'when the puzzle can be solved' do
+        it 'returns the solution' do
+          expect(@puzzle.solve).to eq 'This puzzle can be solved'
+        end
+      end
+    end
+
     describe '#hamming_weight' do
       it 'returns the Hamming weight of the grid' do
         expect(@puzzle.hamming_weight).to eq 7
