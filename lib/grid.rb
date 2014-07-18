@@ -46,11 +46,7 @@ module SlidingPuzzle
     end
 
     def solve
-      case
-      when solved? then solved
-      when solvable? then solve_it
-      else insoluble
-      end
+      solved? ? solved : solvable? ? solve_it : insoluble
     end
 
     def hamming_weight
