@@ -1,3 +1,4 @@
+require 'algorithms'
 require_relative './errors'
 
 module SlidingPuzzle
@@ -44,6 +45,14 @@ module SlidingPuzzle
       ((height.even? && blank_at_row.odd?) == inversions.even?)
     end
 
+    def solve
+      case
+      when solved? then solved
+      when solvable? then solve_it
+      else insoluble
+      end
+    end
+
     def hamming_weight
       tiles.map.with_index do |tile, pos|
         tile == 0 || tile == pos + 1 ? 0 : 1
@@ -86,6 +95,18 @@ module SlidingPuzzle
           0 < t && t < tile
         end
       end.reduce(:+)
+    end
+
+    def solved
+      @grid.tap { puts 'This puzzle is already solved.'}
+    end
+
+    def insoluble
+      [].tap { puts 'This puzzle cannot be solved.'}
+    end
+
+    def solve_it
+      'This puzzle can be solved'
     end
   end
 end
