@@ -27,7 +27,7 @@ describe SlidingPuzzle::Grid do
                                          [0, 4,  7, 10]]
       end
 
-      it 'creates a well-formed m x n puzzle' do
+      it 'creates a well-formed m x n - 1 puzzle' do
         expect(@eight.dimensions).to eq [3, 3]
         expect(@eight.tiles.sort).to eq [*0..8]
         expect(@rect.dimensions).to eq [3, 4]
@@ -70,7 +70,7 @@ describe SlidingPuzzle::Grid do
     end
 
     describe '#tiles' do
-      it 'returns an array of the grid tiles\
+      it 'returns an array of the grid tiles
       in order from top left to bottom right' do
         expect(@puzzle.tiles).to eq [8, 6, 7, 2, 5, 4, 3, 0, 1]
       end
@@ -138,6 +138,31 @@ describe SlidingPuzzle::Grid do
     describe '#manhattan_distance' do
       it 'returns the Manhattan distance of the grid' do
         expect(@puzzle.manhattan_distance).to eq 21
+      end
+    end
+
+    describe '#random_puzzle' do
+      context 'with no arguments' do
+
+        before { @puzzle = SlidingPuzzle::Grid.new }
+
+        it 'returns a random 4 x 4 15 puzzle' do
+          expect(@puzzle.dimensions).to eq [4, 4]
+          expect(@puzzle.tiles.sort).to eq [*0..15]
+        end
+      end
+
+      context 'given a height and a width' do
+
+        before do
+          @puzzle = SlidingPuzzle::Grid.new
+          @puzzle.random_puzzle(5, 8)
+        end
+
+        it 'returns a random h x w (h * w - 1) puzzle' do
+          expect(@puzzle.dimensions).to eq [5, 8]
+          expect(@puzzle.tiles.sort).to eq [*0..39]
+        end
       end
     end
   end
