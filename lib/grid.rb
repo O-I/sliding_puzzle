@@ -40,16 +40,11 @@ module SlidingPuzzle
       r, c = blank_at_row, blank_at_column
       self.tap do
         case direction
-        when :left
-          @grid[r][c], @grid[r][c+1] = @grid[r][c+1], @grid[r][c] unless c == width - 1
-        when :right
-          @grid[r][c], @grid[r][c-1] = @grid[r][c-1], @grid[r][c] unless c == 0
-        when :up
-          @grid[r][c], @grid[r+1][c] = @grid[r+1][c], @grid[r][c] unless r == height - 1
-        when :down
-          @grid[r][c], @grid[r-1][c] = @grid[r-1][c], @grid[r][c] unless r == 0
-        else
-          puts 'Valid input for slide: :up, :down, :left, :right'
+        when :left  then swap r, c + 1 unless c == width - 1
+        when :right then swap r, c - 1 unless c == 0
+        when :up    then swap r + 1, c unless r == height - 1
+        when :down  then swap r - 1, c unless r == 0
+        else puts 'Valid input for slide: :up, :down, :left, :right'
         end
       end
     end
@@ -108,7 +103,8 @@ module SlidingPuzzle
     end
 
     def swap(x, y)
-      x, y = y, x
+      r, c = blank_at_row, blank_at_column
+      @grid[r][c], @grid[x][y] = @grid[x][y], @grid[r][c]
     end
 
     def inversions
