@@ -36,6 +36,24 @@ module SlidingPuzzle
       @grid[0].size
     end
 
+    def slide(direction)
+      r, c = blank_at_row, blank_at_column
+      self.tap do
+        case direction
+        when :left
+          @grid[r][c], @grid[r][c+1] = @grid[r][c+1], @grid[r][c] unless c == width - 1
+        when :right
+          @grid[r][c], @grid[r][c-1] = @grid[r][c-1], @grid[r][c] unless c == 0
+        when :up
+          @grid[r][c], @grid[r+1][c] = @grid[r+1][c], @grid[r][c] unless r == height - 1
+        when :down
+          @grid[r][c], @grid[r-1][c] = @grid[r-1][c], @grid[r][c] unless r == 0
+        else
+          puts 'Valid input for slide: :up, :down, :left, :right'
+        end
+      end
+    end
+
     def solved?
       tiles == [*0...grid_size].rotate(1)
     end
