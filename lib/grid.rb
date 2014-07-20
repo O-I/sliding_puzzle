@@ -85,6 +85,10 @@ module SlidingPuzzle
       tiles.index(0) / height
     end
 
+    def blank_at_column
+      tiles.index(0) % width
+    end
+
     def inversions
       tiles.map.with_index do |tile, pos|
         tiles[pos...grid_size].count do |t|
