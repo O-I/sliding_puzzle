@@ -100,6 +100,49 @@ describe SlidingPuzzle::Grid do
       end
     end
 
+    describe '#slide' do
+
+      context 'with a valid symbol direction' do
+
+        describe ':left' do
+          it 'slides a tile one space left' do
+            expect(@puzzle.slide(:left).grid).to be
+              [[8, 6, 7], [2, 5, 4], [3, 1, 0]]
+          end
+        end
+
+        describe ':right' do
+          it 'slides a tile one space right' do
+            expect(@puzzle.slide(:right).grid).to be
+              [[8, 6, 7], [2, 5, 4], [0, 3, 1]]
+          end
+        end
+
+        describe ':up' do
+          it 'slides a tile one space up' do
+            expect(@puzzle.slide(:up).grid).to be
+              [[8, 6, 7], [2, 5, 4], [3, 0, 1]]
+          end
+        end
+
+        describe ':down' do
+          it 'slides a tile one space down' do
+            expect(@puzzle.slide(:down).grid).to be
+              [[8, 6, 7], [2, 0, 4], [3, 5, 1]]
+          end
+        end
+      end
+
+      context 'with an invalid symbol direction' do
+
+        before { $stdout.stub(:write) }
+
+        it 'returns the puzzle unchanged' do
+          expect(@puzzle.slide :upward_and_on).to be @puzzle
+        end
+      end
+    end
+
     describe '#solved?' do
 
       before do
@@ -180,6 +223,7 @@ describe SlidingPuzzle::Grid do
     end
 
     describe '#random_puzzle' do
+
       context 'with no arguments' do
 
         before { @puzzle = SlidingPuzzle::Grid.new }
