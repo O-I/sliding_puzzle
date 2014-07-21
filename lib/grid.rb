@@ -46,6 +46,12 @@ module SlidingPuzzle
       end
     end
 
+    def ==(obj)
+      obj.class == self.class && obj.grid == self.grid
+    end
+
+    alias_method :eql?, :==
+
     def slide(direction)
       r, c = blank_at_row, blank_at_column
       self.tap do
