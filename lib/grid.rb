@@ -36,6 +36,16 @@ module SlidingPuzzle
       @grid[0].size
     end
 
+    def to_s
+      padding = String(grid_size - 1).size + 1
+      @grid.each do |row|
+        row.each do |tile|
+          print String(tile).rjust(padding)
+        end
+        puts
+      end
+    end
+
     def slide(direction)
       r, c = blank_at_row, blank_at_column
       self.tap do
