@@ -52,7 +52,7 @@ module SlidingPuzzle
 
     alias_method :eql?, :==
 
-    def slide(direction)
+    def slide!(direction)
       r, c = blank_at_row, blank_at_column
       self.tap do
         case direction
@@ -65,12 +65,17 @@ module SlidingPuzzle
       end
     end
 
+    def slide(direction)
+      copy = Marshal.load(Marshal.dump(self))
+      copy.slide!(direction)
+    end
+
     def solved?
       tiles == [*0...grid_size].rotate(1)
     end
 
     def solvable?
-      (height.odd?  && inversions.even?) ||
+      (height.odd? && inversions.even?) ||
       ((height.even? && blank_at_row.odd?) == inversions.even?)
     end
 
