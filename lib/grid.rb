@@ -145,7 +145,36 @@ module SlidingPuzzle
     end
 
     def solve_it
-      'This puzzle can be solved'
+      by_min_value = -> x, y { x <= y }
+      q = Containers::PriorityQueue.new &by_min_value
+
+      current, previous, cost = self, nil, 0
+      priority = manhattan_distance + cost
+      priors = {}
+      directions = [:up, :down, :left, :right]
+
+      state = [current, previous, cost]
+
+      q.push(state, priority)
+
+      until q.empty?
+        current, previous, cost = q.pop
+        next if priors[previous]
+        new_path = [previous, current]
+
+        return new_path.flatten[1..-1] if current.solved?
+
+        priors[current] = 1
+
+        directions
+          .map { |way| current.slide(way) }
+          .reject { |g| g == current || g == previous }
+          .each do |new_way|
+            next if priors[new_way]
+            cost += 1
+            q.push([new_way, new_path, cost], cost + new_way.manhattan_distance)
+          end
+      end
     end
   end
 end
