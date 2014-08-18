@@ -168,11 +168,13 @@ module SlidingPuzzle
 
         directions
           .map { |way| current.slide(way) }
+          .tap { cost += 1 }
           .reject { |g| g == current || g == previous }
           .each do |new_way|
             next if priors[new_way]
-            cost += 1
-            q.push([new_way, new_path, cost], cost + new_way.manhattan_distance)
+            state = [new_way, new_path, cost]
+            priority = cost + new_way.manhattan_distance
+            q.push(state, priority)
           end
       end
     end
