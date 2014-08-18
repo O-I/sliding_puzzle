@@ -263,8 +263,17 @@ describe SlidingPuzzle::Grid do
       end
 
       context 'when the puzzle can be solved' do
-        it 'returns the solution' do
-          expect(@puzzle.solve).to eq 'This puzzle can be solved'
+
+        before do
+          @solvable = SlidingPuzzle::Grid.new [[2, 6, 3],
+                                               [1, 0, 4],
+                                               [7, 8, 5]]
+          @solution = @solvable.solve
+        end
+
+        it 'returns the solution set' do
+          expect(@solution.last.solved?).to be true
+          expect(@solution.size).to eq 15
         end
       end
     end
