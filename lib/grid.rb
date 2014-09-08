@@ -104,6 +104,33 @@ module SlidingPuzzle
       end.flatten.reduce(:+)
     end
 
+    def linear_conflict
+      pairs = 0
+      soln = [*0...grid_size].rotate(1).each_slice(width).to_a
+
+      grid.map.with_index { |row, i| row & soln[i] }
+          .select { |r| r.size > 1 }
+          .each do |line|
+            while tile = line.find { |t| line[0] > t }
+              pairs += 2
+              line.shift
+              line.delete tile
+            end
+          end
+
+      grid.transpose.map.with_index { |col, j| col & soln.transpose[j] }
+          .select { |c| c.size > 1 }
+          .each do |line|
+            while tile = line.find { |t| line[0] > t }
+              pairs += 2
+              line.shift
+              line.delete tile
+            end
+          end
+
+      pairs
+    end
+
     def random_puzzle(height = 4, width = 4)
       @grid = [*0...height * width].shuffle.each_slice(width).to_a
     end

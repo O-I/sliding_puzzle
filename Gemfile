@@ -5,6 +5,8 @@ gem 'algorithms'
 
 group :development, :test do
   gem 'pry'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
   gem 'rspec', '~> 3.0.0'
   gem 'guard-rspec', require: false
 end
