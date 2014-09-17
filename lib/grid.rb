@@ -186,19 +186,18 @@ module SlidingPuzzle
 
       until q.empty?
         current, previous, cost = q.pop
-        next if priors[previous]
         new_path = [previous, current]
 
         return new_path.flatten[1..-1] if current.solved?
 
-        priors[current] = 1
+        priors[current.grid] = 1
 
         directions
           .map { |way| current.slide(way) }
           .tap { cost += 1 }
           .reject { |g| g == current || g == previous }
           .each do |new_way|
-            next if priors[new_way]
+            next if priors[new_way.grid]
             state = [new_way, new_path, cost]
             priority = cost + new_way.manhattan_distance
             q.push(state, priority)
