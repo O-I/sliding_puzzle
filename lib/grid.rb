@@ -175,31 +175,25 @@ module SlidingPuzzle
       by_min_value = -> x, y { x <= y }
       q = Containers::PriorityQueue.new &by_min_value
 
-      current, previous, cost = self, nil, 0
-      priority = manhattan_distance + cost
-      priors = {}
+      state = [[], self, 0]
+      priority = manhattan_distance
       directions = [:up, :down, :left, :right]
-
-      state = [current, previous, cost]
 
       q.push(state, priority)
 
       until q.empty?
-        current, previous, cost = q.pop
-        new_path = [previous, current]
+        steps_taken, currently_at, cost = q.pop
+        journey = [steps_taken, currently_at]
 
-        return new_path.flatten[1..-1] if current.solved?
-
-        priors[current.grid] = 1
+        return journey.flatten if currently_at.solved?
 
         directions
-          .map { |way| current.slide(way) }
+          .map { |way| currently_at.slide(way) }
           .tap { cost += 1 }
-          .reject { |g| g == current || g == previous }
-          .each do |new_way|
-            next if priors[new_way.grid]
-            state = [new_way, new_path, cost]
-            priority = cost + new_way.manhattan_distance
+          .reject { |g| g == currently_at || g == steps_taken.flatten.last }
+          .each do |next_step|
+            state = [journey, next_step, cost]
+            priority = cost + next_step.manhattan_distance
             q.push(state, priority)
           end
       end
