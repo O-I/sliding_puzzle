@@ -218,16 +218,21 @@ describe SlidingPuzzle::Grid do
 
     describe '#solvable?' do
 
-      before do        
-        @insoluble = SlidingPuzzle::Grid.new [[ 1,  2,  3,  4],
-                                              [ 5,  6,  7,  8],
-                                              [ 9, 10, 11, 12],
-                                              [13, 15, 14,  0]]
+      before do
+        @insoluble_4x4 = SlidingPuzzle::Grid.new [[ 1,  2,  3,  4],
+                                                  [ 5,  6,  7,  8],
+                                                  [ 9, 10, 11, 12],
+                                                  [13, 15, 14,  0]]
+
+        @insoluble_3x3 = SlidingPuzzle::Grid.new [[1, 4, 6],
+                                                  [5, 2, 0],
+                                                  [8, 3, 7]]
       end
 
       it 'returns whether the puzzle has a solution' do
         expect(@puzzle.solvable?).to be true
-        expect(@insoluble.solvable?).to be false
+        expect(@insoluble_4x4.solvable?).to be false
+        expect(@insoluble_3x3.solvable?).to be false
       end
     end
 

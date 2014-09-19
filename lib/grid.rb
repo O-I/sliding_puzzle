@@ -75,8 +75,8 @@ module SlidingPuzzle
     end
 
     def solvable?
-      (height.odd? && inversions.even?) ||
-      ((height.even? && blank_at_row.odd?) == inversions.even?)
+      (height.odd?  &&  inversions.even?) ||
+      (height.even? && (inversions.even?  == blank_at_row.odd?))
     end
 
     def solve
