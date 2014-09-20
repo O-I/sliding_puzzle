@@ -6,9 +6,9 @@ Solving the 15 puzzle optimally using A* search in Ruby
 
 **The current status:**
 
-I have an implementation of A* that uses Manhattan distance as the heuristic. It currently solves the worst case 8 puzzle (31 moves to reach the goal state) in about five minutes.
+I have an implementation of A* that uses Manhattan distance as the heuristic. It now solves any 8 puzzle, including the worst case scenario (31 moves to reach the goal state), in at most 2 seconds, or if no solution exists, immediately says so.
 
-Preliminary tests with randomly generated 4 x 4 grids suggest that the current implementation is insufficient for solving the 15 puzzle in a reasonable amount of time.
+Tests with randomly generated 4 x 4 grids still suggest that the current implementation is insufficient for solving the 15 puzzle in a reasonable amount of time.
 
 **Next, I'll try:**
 
