@@ -111,20 +111,22 @@ module SlidingPuzzle
       grid.map.with_index { |row, i| row & soln[i] }
           .select { |r| r.size > 1 }
           .each do |line|
-            while tile = line.find { |t| line[0] > t }
-              pairs += 2
-              line.shift
-              line.delete tile
+            while tile = line.shift
+              if pair = line.find { |t| tile > t }
+                pairs += 2
+                line.delete pair
+              end
             end
           end
 
       grid.transpose.map.with_index { |col, j| col & soln.transpose[j] }
           .select { |c| c.size > 1 }
           .each do |line|
-            while tile = line.find { |t| line[0] > t }
-              pairs += 2
-              line.shift
-              line.delete tile
+            while tile = line.shift
+              if pair = line.find { |t| tile > t }
+                pairs += 2
+                line.delete pair
+              end
             end
           end
 
@@ -176,7 +178,7 @@ module SlidingPuzzle
       q = Containers::PriorityQueue.new &by_min_value
 
       state = [[], self, 0]
-      priority = manhattan_distance
+      priority = manhattan_distance + linear_conflict
       directions = [:up, :down, :left, :right]
 
       q.push(state, priority)
@@ -193,7 +195,7 @@ module SlidingPuzzle
           .reject { |g| g == currently_at || g == steps_taken.flatten.last }
           .each do |next_step|
             state = [journey, next_step, cost]
-            priority = cost + next_step.manhattan_distance
+            priority = cost + next_step.manhattan_distance + next_step.linear_conflict
             q.push(state, priority)
           end
       end
