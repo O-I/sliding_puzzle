@@ -295,6 +295,26 @@ describe SlidingPuzzle::Grid do
       end
     end
 
+    describe '#linear_conflict' do
+
+      before do
+        @puzzle1 = SlidingPuzzle::Grid.new [[ 3,  4,  1,  2],
+                                            [ 7,  6,  5, 12],
+                                            [11, 10,  9,  8],
+                                            [13, 15, 14,  0]]
+
+        @puzzle2 = SlidingPuzzle::Grid.new [[13,  2,  3,  1],
+                                            [ 9,  4,  5,  7],
+                                            [ 8, 11, 10,  0],
+                                            [12, 14, 15,  6]]
+      end
+
+      it 'returns the real pair distance of the grid' do
+        expect(@puzzle1.linear_conflict).to eq 14
+        expect(@puzzle2.linear_conflict).to eq 6
+      end
+    end
+
     describe '#random_puzzle' do
 
       context 'with no arguments' do
