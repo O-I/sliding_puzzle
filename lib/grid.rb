@@ -106,31 +106,12 @@ module SlidingPuzzle
 
     def linear_conflict
       pairs = 0
-      soln = [*0...grid_size].rotate(1).each_slice(width).to_a
+      goal = [*0...grid_size].rotate(1).each_slice(width).to_a
 
-      grid.map.with_index { |row, i| row & soln[i] }
-          .select { |r| r.size > 1 }
-          .each do |line|
-            while tile = line.shift
-              if pair = line.find { |t| tile > t }
-                pairs += 2
-                line.delete pair
-              end
-            end
-          end
+      for_rows = [grid, goal]
+      for_columns = for_rows.map(&:transpose)
 
-      grid.transpose.map.with_index { |col, j| col & soln.transpose[j] }
-          .select { |c| c.size > 1 }
-          .each do |line|
-            while tile = line.shift
-              if pair = line.find { |t| tile > t }
-                pairs += 2
-                line.delete pair
-              end
-            end
-          end
-
-      pairs
+      pair_distance(*for_rows) + pair_distance(*for_columns)
     end
 
     def random_puzzle(height = 4, width = 4)
@@ -163,6 +144,21 @@ module SlidingPuzzle
           0 < t && t < tile
         end
       end.reduce(:+)
+    end
+
+    def pair_distance(grid, goal)
+      pairs = 0
+      grid.map.with_index { |row, i| row & goal[i] }
+          .select { |r| r.size > 1 }
+          .each do |line|
+            while tile = line.shift
+              if pair = line.find { |t| tile > t }
+                pairs += 2
+                line.delete pair
+              end
+            end
+          end
+      pairs
     end
 
     def solved
