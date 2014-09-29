@@ -170,6 +170,10 @@ module SlidingPuzzle
     end
 
     def solve_it
+      ida_star
+    end
+
+    def a_star
       by_min_value = -> x, y { x <= y }
       q = Containers::PriorityQueue.new &by_min_value
 
@@ -194,6 +198,39 @@ module SlidingPuzzle
             priority = cost + next_step.manhattan_distance + next_step.linear_conflict
             q.push(state, priority)
           end
+      end
+    end
+
+    def ida_star
+      by_min_value = -> x, y { x <= y }
+      q = Containers::PriorityQueue.new &by_min_value
+
+      threshold = priority = manhattan_distance + linear_conflict
+      directions = [:up, :down, :left, :right]
+
+      loop do
+        state = [[], self, 0]
+        q.push(state, priority)
+
+        until priority > threshold
+          steps_taken, currently_at, cost = q.pop
+          journey = [steps_taken, currently_at]
+
+          return journey.flatten if currently_at.solved?
+
+          directions
+            .map { |way| currently_at.slide(way) }
+            .tap { cost += 1 }
+            .reject { |g| g == currently_at || g == steps_taken.flatten.last }
+            .each do |next_step|
+              state = [journey, next_step, cost]
+              priority = cost + next_step.manhattan_distance + next_step.linear_conflict
+              q.push(state, priority)
+            end
+        end
+
+        threshold = priority
+        q.clear
       end
     end
   end
